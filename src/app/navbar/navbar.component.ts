@@ -26,7 +26,6 @@ export class NavbarComponent {
     var text = this.searchText.trim();
 
     if (text !== '') {
-      // storing search text
       this.recipeService.searchText = text;
       this.router.navigate(['/recipes'], { queryParams: { search: text } });
     }

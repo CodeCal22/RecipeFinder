@@ -28,10 +28,9 @@ export class RecipeDetailComponent implements OnInit {
     if (id) {
       this.loading = true;
 
-      // fetch meal details
-      this.recipeService.getMealById(id).subscribe(result => {
-        if (result.meals && result.meals.length > 0) {
-          this.meal = result.meals[0];
+      this.recipeService.getMealById(id).subscribe(res => {
+        if (res.meals && res.meals.length > 0) {
+          this.meal = res.meals[0];
           this.getIngredients();
           this.getVideoUrl();
         }
@@ -45,15 +44,14 @@ export class RecipeDetailComponent implements OnInit {
   getIngredients() {
     this.ingredients = [];
 
-    // get ingredient and measure fields from API
     for (var i = 1; i <= 20; i++) {
-      var ingredient = this.meal['strIngredient' + i];
-      var measure = this.meal['strMeasure' + i];
+      var name = this.meal['strIngredient' + i];
+      var amount = this.meal['strMeasure' + i];
 
-      if (ingredient && ingredient.trim() !== '') {
+      if (name && name.trim() !== '') {
         this.ingredients.push({
-          name: ingredient,
-          measure: measure
+          name: name,
+          measure: amount
         });
       }
     }
@@ -62,7 +60,6 @@ export class RecipeDetailComponent implements OnInit {
   getVideoUrl() {
     this.videoUrl = null;
 
-    // show video if available
     if (this.meal.strYoutube) {
       var url = this.meal.strYoutube.replace('watch?v=', 'embed/');
       url = url.replace('youtu.be/', 'www.youtube.com/embed/');

@@ -11,17 +11,14 @@ export class RecipeService {
   constructor(private http: HttpClient) { }
 
   searchMeals(query: string) {
-    // calling API here
     return this.http.get<any>(this.apiUrl + '/search.php?s=' + encodeURIComponent(query));
   }
 
   searchMealsByCategory(category: string) {
-    // searching by category here
     return this.http.get<any>(this.apiUrl + '/filter.php?c=' + encodeURIComponent(category));
   }
 
   getCategories() {
-    // get all meal categories
     return this.http.get<any>(this.apiUrl + '/list.php?c=list');
   }
 

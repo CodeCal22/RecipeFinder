@@ -36,7 +36,6 @@ export class HomeComponent {
   constructor(private recipeService: RecipeService, private router: Router) { }
 
   openCategory(categoryName: string) {
-    // navigate to recipes page
     this.recipeService.searchText = categoryName;
     this.router.navigate(['/recipes'], { queryParams: { search: categoryName } });
   }

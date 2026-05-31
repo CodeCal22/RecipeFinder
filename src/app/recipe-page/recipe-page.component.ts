@@ -41,25 +41,24 @@ export class RecipePageComponent implements OnInit {
     });
   }
 
-  loadCategories(loadAllAfter: boolean) {
+  loadCategories(showAll: boolean) {
     if (this.categories.length > 1) {
-      if (loadAllAfter) {
+      if (showAll) {
         this.loadAllMeals();
       }
       return;
     }
 
-    // fetch all categories for dropdown
-    this.recipeService.getCategories().subscribe(result => {
-      if (result.meals) {
-        for (var i = 0; i < result.meals.length; i++) {
-          if (!this.categories.includes(result.meals[i].strCategory)) {
-            this.categories.push(result.meals[i].strCategory);
+    this.recipeService.getCategories().subscribe(res => {
+      if (res.meals) {
+        for (var i = 0; i < res.meals.length; i++) {
+          if (!this.categories.includes(res.meals[i].strCategory)) {
+            this.categories.push(res.meals[i].strCategory);
           }
         }
       }
 
-      if (loadAllAfter) {
+      if (showAll) {
         this.loadAllMeals();
       }
     });
@@ -71,11 +70,10 @@ export class RecipePageComponent implements OnInit {
     this.meals = [];
     this.searchTitle = text + ' recipes';
 
-    // calling API here
     this.recipeService.searchMeals(text).subscribe({
-      next: result => {
-        if (result.meals && result.meals.length > 0) {
-          this.meals = result.meals;
+      next: res => {
+        if (res.meals && res.meals.length > 0) {
+          this.meals = res.meals;
           this.loading = false;
           this.changeDetector.detectChanges();
         } else {
@@ -94,12 +92,10 @@ export class RecipePageComponent implements OnInit {
     this.meals = [];
     this.searchTitle = text + ' recipes';
 
-    // trying category search if normal search is empty
     this.recipeService.searchMealsByCategory(text).subscribe({
-      next: result => {
-        this.meals = result.meals || [];
+      next: res => {
+        this.meals = res.meals || [];
 
-        // category API does not send category name, so adding it here
         for (var i = 0; i < this.meals.length; i++) {
           this.meals[i].strCategory = text;
         }
@@ -123,8 +119,8 @@ export class RecipePageComponent implements OnInit {
     this.searchTitle = 'Chicken recipes';
 
     this.recipeService.getDefaultMeals().subscribe({
-      next: result => {
-        this.meals = result.meals || [];
+      next: res => {
+        this.meals = res.meals || [];
         this.loading = false;
         this.changeDetector.detectChanges();
       },
@@ -143,41 +139,40 @@ export class RecipePageComponent implements OnInit {
     this.meals = [];
     this.searchTitle = 'All recipes';
 
-    var categoryNames = this.categories.filter(category => category !== 'All');
-    var allMeals: any[] = [];
-    var finishedRequests = 0;
+    var list = this.categories.filter(cat => cat !== 'All');
+    var mealList: any[] = [];
+    var done = 0;
 
-    if (categoryNames.length === 0) {
+    if (list.length === 0) {
       this.loading = false;
       return;
     }
 
-    // fetch meals from every category
-    for (var i = 0; i < categoryNames.length; i++) {
-      let categoryName = categoryNames[i];
+    for (var i = 0; i < list.length; i++) {
+      let cat = list[i];
 
-      this.recipeService.searchMealsByCategory(categoryName).subscribe({
-        next: result => {
-          var categoryMeals = result.meals || [];
+      this.recipeService.searchMealsByCategory(cat).subscribe({
+        next: res => {
+          var data = res.meals || [];
 
-          for (var j = 0; j < categoryMeals.length; j++) {
-            categoryMeals[j].strCategory = categoryName;
-            allMeals.push(categoryMeals[j]);
+          for (var j = 0; j < data.length; j++) {
+            data[j].strCategory = cat;
+            mealList.push(data[j]);
           }
 
-          finishedRequests++;
+          done++;
 
-          if (finishedRequests === categoryNames.length) {
-            this.meals = allMeals;
+          if (done === list.length) {
+            this.meals = mealList;
             this.loading = false;
             this.changeDetector.detectChanges();
           }
         },
         error: () => {
-          finishedRequests++;
+          done++;
 
-          if (finishedRequests === categoryNames.length) {
-            this.meals = allMeals;
+          if (done === list.length) {
+            this.meals = mealList;
             this.loading = false;
             this.changeDetector.detectChanges();
           }
