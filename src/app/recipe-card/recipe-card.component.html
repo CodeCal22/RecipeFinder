@@ -1,8 +1,8 @@
-<div class="card h-100">
+<div class="card h-100 shadow-sm recipe-card">
   <img [src]="meal.strMealThumb" class="card-img-top" [alt]="meal.strMeal">
   <div class="card-body">
     <h5 class="card-title">{{ meal.strMeal }}</h5>
-    <p class="card-text text-muted" *ngIf="meal.strCategory">{{ meal.strCategory }}</p>
+    <p class="card-text text-muted small">Category: {{ meal.strCategory || 'Not available' }}</p>
     <button class="btn btn-primary" (click)="viewRecipe()">View Recipe</button>
   </div>
 </div>

@@ -1,3 +1,10 @@
 .instructions {
   white-space: pre-line;
+  line-height: 1.7;
+}
+
+.col-md-6 img {
+  max-height: 430px;
+  width: 100%;
+  object-fit: cover;
 }

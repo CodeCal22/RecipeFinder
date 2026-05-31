@@ -2,3 +2,7 @@
   height: 220px;
   object-fit: cover;
 }
+
+.recipe-card:hover {
+  box-shadow: var(--bs-box-shadow) !important;
+}

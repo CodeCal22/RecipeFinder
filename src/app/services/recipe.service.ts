@@ -20,6 +20,11 @@ export class RecipeService {
     return this.http.get<any>(this.apiUrl + '/filter.php?c=' + encodeURIComponent(category));
   }
 
+  getCategories() {
+    // get all meal categories
+    return this.http.get<any>(this.apiUrl + '/list.php?c=list');
+  }
+
   getDefaultMeals() {
     return this.searchMeals('chicken');
   }

@@ -4,19 +4,67 @@
   </div>
 
   <div *ngIf="meal">
-    <a routerLink="/recipes" class="btn btn-secondary mb-3">Back to Recipes</a>
+    <a routerLink="/recipes" class="btn btn-secondary mb-4">← Back to Recipes</a>
 
-    <div class="row">
-      <div class="col-md-5">
-        <img [src]="meal.strMealThumb" class="img-fluid rounded" [alt]="meal.strMeal">
+    <div class="row align-items-center mb-4">
+      <div class="col-md-6 mb-3">
+        <img [src]="meal.strMealThumb" class="img-fluid rounded shadow-sm" [alt]="meal.strMeal">
       </div>
 
-      <div class="col-md-7">
-        <h2>{{ meal.strMeal }}</h2>
-        <p class="text-muted">{{ meal.strCategory }}</p>
-        <h5>Instructions</h5>
-        <p class="instructions">{{ meal.strInstructions }}</p>
+      <div class="col-md-6">
+        <h1 class="mb-3">{{ meal.strMeal }}</h1>
+        <p class="mb-2"><strong>Category:</strong> {{ meal.strCategory || 'Not available' }}</p>
+        <p class="mb-2"><strong>Area:</strong> {{ meal.strArea || 'Not available' }}</p>
       </div>
     </div>
+
+    <div class="row mb-4">
+      <div class="col-md-6 mb-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Category</h5>
+            <p class="card-text">{{ meal.strCategory || 'Not available' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Area</h5>
+            <p class="card-text">{{ meal.strArea || 'Not available' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <h3 class="mb-3">Ingredients</h3>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let item of ingredients">
+          {{ item.name }} - {{ item.measure }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h3 class="card-title mb-3">Instructions</h3>
+        <p class="instructions card-text">{{ meal.strInstructions }}</p>
+      </div>
+    </div>
+
+    <div class="mb-4" *ngIf="videoUrl">
+      <h3 class="mb-3">Watch Recipe Video 🍳</h3>
+      <div class="ratio ratio-16x9">
+        <iframe
+          [src]="videoUrl"
+          title="Recipe video"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+
+    <a routerLink="/recipes" class="btn btn-secondary mb-4">← Back to Recipes</a>
   </div>
 </div>
